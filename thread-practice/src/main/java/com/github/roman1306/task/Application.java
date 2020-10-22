@@ -1,21 +1,37 @@
 package com.github.roman1306.task;
 
-import com.github.roman1306.task.entity.SlotForReservation;
-import com.github.roman1306.task.threads.ConsumerForReservation;
-import com.github.roman1306.task.threads.ProducerForReservation;
 
-import java.util.concurrent.*;
+import com.github.roman1306.task.queue.MyQueue;
+import com.github.roman1306.task.threads.ConsumerRunnable;
+import com.github.roman1306.task.threads.ProducerRunnable;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 
 public class Application {
-    private static BlockingQueue<SlotForReservation> queue = new LinkedBlockingQueue<>(5);
 
     public static void main(String[] args) throws InterruptedException {
+        MyQueue queue = new MyQueue(5);
 
-        ExecutorService executorService = Executors.newFixedThreadPool(2);
-        executorService.submit(new ProducerForReservation(queue));
-        executorService.submit(new ConsumerForReservation(queue));
+        ExecutorService executorService = Executors.newFixedThreadPool(8);
+        executorService.submit(new ProducerRunnable(queue, 1));
+        executorService.submit(new ConsumerRunnable(queue, 1));
+        executorService.submit(new ProducerRunnable(queue, 2));
+        executorService.submit(new ConsumerRunnable(queue, 2));
+        executorService.submit(new ProducerRunnable(queue, 3));
+        executorService.submit(new ConsumerRunnable(queue, 3));
+        executorService.submit(new ConsumerRunnable(queue, 4));
+        executorService.submit(new ConsumerRunnable(queue, 5));
+        executorService.submit(new ConsumerRunnable(queue, 6));
+
         executorService.shutdown();
-        executorService.awaitTermination(5, TimeUnit.SECONDS);
+
+        executorService.awaitTermination(1, TimeUnit.DAYS);
+
+        System.out.println("finish");
+
     }
 }
 
