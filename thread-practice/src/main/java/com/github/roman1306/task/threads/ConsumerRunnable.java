@@ -18,13 +18,14 @@ public class ConsumerRunnable implements Runnable {
 
     @Override
     public void run() {
+        Book slot;
 
         while (queue.hasProducer() || !queue.isEmpty()) {
             try {
                 Thread.sleep(TimeUnit.SECONDS.toMillis(2));
-                Book slot = queue.pop();
+                slot = queue.pop();
 
-                if (slot == null) {
+                if (slot != null) {
                     System.out.println("Consumer № " + id + " get " + slot);
                 }
 
