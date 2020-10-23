@@ -16,6 +16,33 @@ public class MyQueue {
     List<ProducerRunnable> producerList = new LinkedList<>();
     List<ConsumerRunnable> consumerList = new LinkedList<>();
 
+    public MyQueue(int maxCapacity) {
+        this.maxCapacity = maxCapacity;
+    }
+
+    public synchronized void push(Book slot) throws InterruptedException {
+        while (queue.size() == maxCapacity) {
+            if (hasConsumer())
+                wait();
+            else
+                break;
+        }
+        queue.add(slot);
+        notify();
+    }
+
+    public synchronized Book pop() throws InterruptedException {
+        while (queue.isEmpty()) {
+            if (hasProducer())
+                wait();
+            else
+                break;
+        }
+        Book slot = queue.poll();
+        notify();
+        return slot;
+    }
+
     public synchronized void addProducer(ProducerRunnable producer) {
         producerList.add(producer);
     }
@@ -42,32 +69,5 @@ public class MyQueue {
 
     public synchronized boolean isEmpty() {
         return queue.isEmpty();
-    }
-
-    public MyQueue(int maxCapacity) {
-        this.maxCapacity = maxCapacity;
-    }
-
-    public synchronized void push(Book slot) throws InterruptedException {
-        while (queue.size() == maxCapacity) {
-            if (hasConsumer())
-                wait();
-            else
-                break;
-        }
-        queue.add(slot);
-        notify();
-    }
-
-    public synchronized Book pop() throws InterruptedException {
-        while (queue.isEmpty()) {
-            if (hasProducer())
-                wait();
-            else
-                break;
-        }
-        Book slot = queue.poll();
-        notify();
-        return slot;
     }
 }

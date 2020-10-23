@@ -11,6 +11,8 @@
     <modules>
         <module>thread-practice</module>
         <module>money-transfer</module>
+        <module>reflection-annotation</module>
+        <module>regexp</module>
     </modules>
 
 
