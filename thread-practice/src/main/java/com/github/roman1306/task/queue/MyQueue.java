@@ -1,70 +1,62 @@
 package com.github.roman1306.task.queue;
 
 import com.github.roman1306.task.entity.Book;
-import com.github.roman1306.task.threads.ConsumerRunnable;
-import com.github.roman1306.task.threads.ProducerRunnable;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MyQueue {
 
     private Queue<Book> queue = new LinkedList<>();
     private final int maxCapacity;
 
-    List<ProducerRunnable> producerList = new LinkedList<>();
-    List<ConsumerRunnable> consumerList = new LinkedList<>();
+    AtomicInteger countProducer = new AtomicInteger(0);
+    AtomicInteger countConsumer = new AtomicInteger(0);
 
     public MyQueue(int maxCapacity) {
         this.maxCapacity = maxCapacity;
     }
 
     public synchronized void push(Book slot) throws InterruptedException {
-        while (queue.size() == maxCapacity) {
-            if (hasConsumer())
-                wait();
-            else
-                break;
+        while (queue.size() == maxCapacity && hasConsumer()) {
+            wait();
         }
         queue.add(slot);
-        notify();
+        notifyAll();
     }
 
     public synchronized Book pop() throws InterruptedException {
-        while (queue.isEmpty()) {
-            if (hasProducer())
-                wait();
-            else
-                break;
+        while (queue.isEmpty() && hasProducer()) {
+            wait();
         }
         Book slot = queue.poll();
-        notify();
+        notifyAll();
         return slot;
     }
 
-    public synchronized void addProducer(ProducerRunnable producer) {
-        producerList.add(producer);
+    public synchronized void addProducer() {
+        countProducer.incrementAndGet();
     }
 
-    public synchronized void removeProducer(ProducerRunnable producer) {
-        producerList.remove(producer);
+    public synchronized void removeProducer() {
+        countProducer.decrementAndGet();
     }
 
     public synchronized boolean hasProducer() {
-        return !producerList.isEmpty();
+        return countProducer.get() != 0;
     }
 
-    public synchronized void addConsumer(ConsumerRunnable consumer) {
-        consumerList.add(consumer);
+    public synchronized void addConsumer() {
+        countConsumer.incrementAndGet();
     }
 
-    public synchronized void removeConsumer(ConsumerRunnable consumer) {
-        consumerList.remove(consumer);
+    public synchronized void removeConsumer() {
+        countConsumer.decrementAndGet();
     }
 
     synchronized boolean hasConsumer() {
-        return !consumerList.isEmpty();
+        return countConsumer.get() != 0;
     }
 
     public synchronized boolean isEmpty() {
