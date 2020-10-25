@@ -1,4 +1,4 @@
-package com.github.roman1306.transfer.Threads;
+package com.github.roman1306.transfer.threads;
 
 import com.github.roman1306.transfer.entity.Account;
 import com.github.roman1306.transfer.service.AccountService;
