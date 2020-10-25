@@ -10,19 +10,17 @@ import java.util.concurrent.TimeUnit;
 
 public class Application {
 
+
     public static void main(String[] args) throws InterruptedException {
         MyQueue queue = new MyQueue(5);
 
         ExecutorService executorService = Executors.newFixedThreadPool(9);
-        executorService.submit(new ProducerRunnable(queue, 1));
-        executorService.submit(new ConsumerRunnable(queue, 1));
-        executorService.submit(new ProducerRunnable(queue, 2));
-        executorService.submit(new ConsumerRunnable(queue, 2));
-        executorService.submit(new ProducerRunnable(queue, 3));
-        executorService.submit(new ConsumerRunnable(queue, 3));
-        executorService.submit(new ConsumerRunnable(queue, 4));
-        executorService.submit(new ConsumerRunnable(queue, 5));
-        executorService.submit(new ConsumerRunnable(queue, 6));
+        for (int i = 0; i < 3; i++) {
+            executorService.submit(new ProducerRunnable(queue, i));
+        }
+        for (int i = 0; i < 6; i++) {
+            executorService.submit(new ConsumerRunnable(queue, i));
+        }
 
         executorService.shutdown();
 
