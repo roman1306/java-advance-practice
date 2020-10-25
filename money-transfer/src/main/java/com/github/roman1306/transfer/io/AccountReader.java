@@ -36,8 +36,7 @@ public class AccountReader extends AccountIO {
             return (Account) inObj.readObject();
 
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
+            throw new IllegalArgumentException("Account not found");
         }
     }
 }

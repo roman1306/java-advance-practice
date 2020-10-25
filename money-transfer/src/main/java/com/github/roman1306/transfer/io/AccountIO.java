@@ -2,7 +2,7 @@ package com.github.roman1306.transfer.io;
 
 abstract public class AccountIO {
     protected String path;
-    protected String format = ".bin";
+    protected String format = "bin";
 
     public AccountIO(String path) {
         this.path = path;

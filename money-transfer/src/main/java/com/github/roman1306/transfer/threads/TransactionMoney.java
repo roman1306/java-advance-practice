@@ -1,18 +1,17 @@
 package com.github.roman1306.transfer.threads;
 
-import com.github.roman1306.transfer.entity.Account;
-import com.github.roman1306.transfer.service.AccountService;
+import com.github.roman1306.transfer.bank.Bank;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class TransactionMoney implements Runnable {
-    private final Account from;
-    private final Account to;
+    private final String from;
+    private final String to;
     private final long sum;
+    private final Bank bank;
 
     @Override
     public void run() {
-        AccountService.sendMoney(from, to, sum);
-
+        bank.sendMoney(from, to, sum);
     }
 }
