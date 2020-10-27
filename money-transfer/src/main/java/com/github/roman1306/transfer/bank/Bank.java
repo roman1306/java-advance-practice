@@ -46,7 +46,7 @@ public class Bank {
         }
     }
 
-    private static void takeLocks(Account from, Account to) {
+    private void takeLocks(Account from, Account to) {
         boolean fromLockTake = false;
         boolean toLockTake = false;
 

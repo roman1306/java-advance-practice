@@ -23,6 +23,6 @@ public class AccountRepository {
     }
 
     public Account getAccountById(String id) {
-        return accountsMap.getOrDefault(id, null);
+        return accountsMap.get(id);
     }
 }

@@ -12,6 +12,11 @@ public class AccountService {
     }
 
     public static boolean withdrawalAndReplenishment(Account from, Account to, long sum) {
+        if (from.equals(to)) {
+            logger.warning("Operation failed: accounts equal");
+            return false;
+        }
+
         logger.info("Operation begin from " + from.getId() +
                 " to " + to.getId() + " summa " + sum);
 

@@ -2,10 +2,11 @@ package com.github.roman1306.transfer.io;
 
 import com.github.roman1306.transfer.entity.Account;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.MissingResourceException;
+
 
 public class AccountWriter extends AccountIO {
 
@@ -28,4 +29,11 @@ public class AccountWriter extends AccountIO {
         }
     }
 
+    public void initAccount() {
+        new File(path).mkdirs();
+
+        for (int i = 1; i <= 10; i++) {
+            writeAccount(new Account(String.valueOf(i), 5000));
+        }
+    }
 }

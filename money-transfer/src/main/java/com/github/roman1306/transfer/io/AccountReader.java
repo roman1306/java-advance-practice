@@ -4,6 +4,7 @@ import com.github.roman1306.transfer.entity.Account;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class AccountReader extends AccountIO {
@@ -21,12 +22,14 @@ public class AccountReader extends AccountIO {
 
         File[] files = dir.listFiles();
 
-        if (files != null) {
-            for (File file : files) {
-
-                accountList.add(readAccountByFileName(file.getName()));
-            }
+        if (files == null) {
+            return Collections.emptyList();
         }
+
+        for (File file : files) {
+            accountList.add(readAccountByFileName(file.getName()));
+        }
+
         return accountList;
     }
 
@@ -38,5 +41,9 @@ public class AccountReader extends AccountIO {
         } catch (IOException | ClassNotFoundException e) {
             throw new IllegalArgumentException("Account not found");
         }
+    }
+
+    public long readSumBalancesAccounts() {
+        return readAllAccounts().stream().mapToLong(Account::getBalance).sum();
     }
 }
