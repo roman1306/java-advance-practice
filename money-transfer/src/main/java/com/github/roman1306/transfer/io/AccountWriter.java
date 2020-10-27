@@ -1,6 +1,7 @@
 package com.github.roman1306.transfer.io;
 
 import com.github.roman1306.transfer.entity.Account;
+import com.github.roman1306.transfer.exception.AccountIOException;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -25,7 +26,7 @@ public class AccountWriter extends AccountIO {
             outObj.writeObject(account);
             return true;
         } catch (IOException e) {
-            throw new IllegalArgumentException("Account not recorded");
+            throw new AccountIOException(e.getMessage());
         }
     }
 

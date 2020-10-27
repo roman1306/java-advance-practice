@@ -1,6 +1,7 @@
 package com.github.roman1306.transfer.io;
 
 import com.github.roman1306.transfer.entity.Account;
+import com.github.roman1306.transfer.exception.AccountIOException;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class AccountReader extends AccountIO {
             return (Account) inObj.readObject();
 
         } catch (IOException | ClassNotFoundException e) {
-            throw new IllegalArgumentException("Account not found");
+            throw new AccountIOException(e.getMessage());
         }
     }
 
