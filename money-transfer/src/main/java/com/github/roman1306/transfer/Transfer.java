@@ -23,7 +23,7 @@ public class Transfer {
 
         accountWriter.initAccount();
 
-        System.out.println("Balance all accounts =" + accountReader.readSumBalancesAccounts());
+        AccountService.logger.info("Balance all accounts {}}", accountReader.readSumBalancesAccounts());
 
         Bank bank = new Bank(accountReader, accountWriter, new AccountRepository());
 
@@ -37,7 +37,7 @@ public class Transfer {
 
         executorService.awaitTermination(1, TimeUnit.HOURS);
 
-        System.out.println("Balance all accounts = " + accountReader.readSumBalancesAccounts());
+        AccountService.logger.info("Balance all accounts = {}", accountReader.readSumBalancesAccounts());
 
     }
 
