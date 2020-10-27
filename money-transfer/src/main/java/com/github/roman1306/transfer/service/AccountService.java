@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class AccountService {
-    public static final Logger logger = LoggerFactory.getLogger("logger");
+    public static final Logger logger = LoggerFactory.getLogger(AccountService.class);
 
     public static Account createAccount(String id, long balance) {
         return new Account(id, balance);
