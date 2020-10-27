@@ -4,6 +4,7 @@ import com.github.roman1306.transfer.bank.Bank;
 import com.github.roman1306.transfer.io.AccountReader;
 import com.github.roman1306.transfer.io.AccountWriter;
 import com.github.roman1306.transfer.repository.AccountRepository;
+import com.github.roman1306.transfer.service.AccountService;
 import com.github.roman1306.transfer.threads.RandomTransactionMoney;
 
 import java.util.concurrent.ExecutorService;
@@ -21,7 +22,8 @@ public class Transfer {
         AccountReader accountReader = new AccountReader(PATH);
 
         accountWriter.initAccount();
-        System.out.println(accountReader.readSumBalancesAccounts());
+
+        System.out.println("Balance all accounts =" + accountReader.readSumBalancesAccounts());
 
         Bank bank = new Bank(accountReader, accountWriter, new AccountRepository());
 
@@ -35,7 +37,7 @@ public class Transfer {
 
         executorService.awaitTermination(1, TimeUnit.HOURS);
 
-        System.out.println(accountReader.readSumBalancesAccounts());
+        System.out.println("Balance all accounts = " + accountReader.readSumBalancesAccounts());
 
     }
 
