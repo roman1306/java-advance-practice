@@ -36,7 +36,7 @@ public class Bank {
         takeLocks(accountFrom, accountTo);
 
         try {
-            if (AccountService.withdrawalAndReplenishment(accountFrom, accountTo, sum)) {
+            if (AccountService.transactionOperation(accountFrom, accountTo, sum)) {
                 accountWriter.writeAccount(accountFrom);
                 accountWriter.writeAccount(accountTo);
             }

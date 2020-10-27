@@ -11,7 +11,7 @@ public class AccountService {
         return new Account(id, balance);
     }
 
-    public static boolean withdrawalAndReplenishment(Account from, Account to, long sum) {
+    public static boolean transactionOperation(Account from, Account to, long sum) {
         if (from.equals(to)) {
             logger.error("Operation failed: accounts equal {} = {} ", from.getId(), to.getId());
             return false;
@@ -19,15 +19,27 @@ public class AccountService {
 
         logger.info("Operation begin from {} to {} summa {}", from.getId(), to.getId(), sum);
 
-        if (from.getBalance() < sum) {
-            logger.error("Operation failed: not enough balance = {} summa = {}", to.getId(), sum);
-            return false;
-        } else {
-            from.setBalance(from.getBalance() - sum);
-            to.setBalance(to.getBalance() + sum);
+        if (withdrawal(from, sum)) {
+
+            replenishment(to, sum);
             logger.info("Operation successful balance from = {} balance to = {}", from.getBalance(), to.getBalance());
             return true;
         }
+        return false;
 
+    }
+
+    private static boolean withdrawal(Account from, long sum) {
+        if (from.getBalance() >= sum) {
+
+            from.setBalance(from.getBalance() - sum);
+            return true;
+        }
+        logger.error("Operation failed: not enough from balance = {} summa = {}", from.getId(), sum);
+        return false;
+    }
+
+    private static void replenishment(Account to, long sum) {
+        to.setBalance(to.getBalance() + sum);
     }
 }
